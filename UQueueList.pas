@@ -1,55 +1,51 @@
 unit UQueueList;
 
 interface
-
-type
+  type
   TElem = char;
   TPtr = ^TNode;
   TNode = record
     inf : TElem;
     next : TPtr;
   end;
-  TQueue = record
-    Head, Tail : TPtr;
-  end;
+  TStack = TPtr;
 
-  procedure Init (var Q : TQueue);
-  function IsEmpty (var Q : TQueue) : boolean;
-  function IsFull (var Q : TQueue) : boolean;
-  function TryPush (var Q : TQueue; el : TElem) : boolean;
-  procedure Push (var Q : TQueue; el : TElem);                 //Достать из стека
-  function TryPop (var Q : TQueue; var el : TElem) : boolean;  //Вставить в стек
-  function Pop (var Q : TQueue) : TElem;
-  function Peek(var stack : TQueue): char;
-  
+   procedure Init (var S : TStack);                         //init!
+   procedure Push (var S : TStack; el : TElem);             //Vstavit v stack
+   function TryPush (var S : TStack; el : TElem) : boolean; //Dostat iz stack
+   function Pop (var S : TStack) : TElem;
+   function TryPop (var S : TStack; var el : TElem) : boolean;
+   function IsEmpty (var S : TStack) : boolean;
+   function Peek(var stack : TStack): char;                 //Prosmotr verxnego elem
+
+
 implementation
 uses SysUtils;
 
-procedure Init (var Q : TQueue);
+procedure Init (var S : TStack);
 begin
-  Q.Head:=nil;
-  Q.Tail:=nil;
+  S:=nil;
 end;
 
-function IsEmpty (var Q : TQueue) : boolean;
+function IsEmpty (var S : TStack) : boolean;
 begin
-  Result:=(Q.Head = nil);
+  Result:=(S = nil);
 end;
 
-function IsFull (var Q : TQueue) : boolean;
+function TryPop (var S : TStack; var el : TElem) : boolean;
 var
   z : TPtr;
 begin
-  try
-    new(z);
-    dispose(z);
-    Result:=false;
-  except
-    Result:=true;
-  end;
+  Result:=S<>nil;
+  if Result then
+    begin
+      z:=S;
+      el:=z^.inf;
+      S:=z^.next;
+      dispose(z);
+    end;
 end;
-
-function TryPush (var Q : TQueue; el : TElem) : boolean;
+function TryPush (var S : TStack; el : TElem) : boolean;
 var
   z : TPtr;
 begin
@@ -57,52 +53,31 @@ begin
   try
     new(z);
     z^.inf:=el;
-    z^.next:=nil;
-    if Q.Head = nil then
-      Q.Head:=z
-    else
-      Q.Tail^.next:=z;
-    Q.Tail:=z;
+    z^.next:=S;
+    S:=z;
   except
     Result:=false;
   end;
 end;
 
-
-function TryPop (var Q : TQueue; var el : TElem) : boolean;
-var
-  z : TPtr;
+procedure Push (var S : TStack; el : TElem);
 begin
-  Result:=Q.Head<>nil;
-  if Result then
-    begin
-      z:=Q.Head;
-      el:=z^.inf;
-      Q.Head:=z^.next;
-      dispose(z);
-    end;
+  if not TryPush(S, el) then
+    raise Exception.Create('Error');
 end;
 
-procedure Push (var Q : TQueue; el : TElem);
+function Pop (var S : TStack) : TElem;
 begin
-  if not TryPush(Q, el) then
-    raise Exception.Create('Переполнение очереди');
+  if not TryPop(S, Result) then
+    raise Exception.Create('errro');
 end;
 
-function Pop (var Q : TQueue) : TElem;
-begin
-  if not TryPop(Q, Result) then
-    raise Exception.Create('Ошибка!');
-end;
-
-
-
-function Peek(var stack : TQueue): char;
+function Peek(var stack : TStack): char;
 var
   topElement: char;
 begin
   if IsEmpty(stack) then
-    raise Exception.Create('Ошибка!!!')
+    raise Exception.Create('error!!!')
   else
   begin
     topElement := Pop(stack);

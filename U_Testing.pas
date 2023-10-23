@@ -8,28 +8,29 @@ uses
 
 procedure main_test(var check : boolean; str : string);
 function IsOperator(ch: Char): Boolean;
-
+function GetPrecedence(ch: Char): Integer;
 
 implementation
 
-//Type
-  //TAuxiliarySet = set of ('(', ')', '+', '-', '/', '*');
-  //TNumbers = set of '0'..'9';
-  //TLower_case = set of 'a'..'z';
-  //TCapital_letters= set of 'A'..'Z';
+function GetPrecedence(ch: Char): Integer;
+begin
+  case ch of
+    '+', '-': Result := 1;
+    '*', '/': Result := 2;
+    else Result := 0;
+  end;
+end;
+
 
 function IsOperator(ch: Char): Boolean;
 begin
   Result := (ch = '+') or (ch = '-') or (ch = '*') or (ch = '/');
 end;
 
+
 function Test_In_str(str : string) : boolean;
 var
   AuxiliarySet, Numbers, Lower_case,  Capital_letters, all_multitude : set of char;
-  //Numbers : TNumbers;
-  //Lower_case : TLower_case;
-  //Capital_letters : TCapital_letters;
-  //all_multitude : set of char;
 
   lg, i: integer;
   flag : boolean;
@@ -45,8 +46,6 @@ begin
   flag := true;
   while (i <= lg) and (flag) do
     begin
-      //flag := ((str[i] in Numbers) or (str[i] in AuxiliarySet) or (str[i] in Lower_case) or (str[i] in Capital_letters));
-      //writeln(str[i]);
       flag := (str[i] in all_multitude);
       i := i + 1;
     end;

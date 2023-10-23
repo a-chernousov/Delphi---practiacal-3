@@ -10,24 +10,14 @@ uses
   file_unit in 'file_unit.pas';
 
 var
-  flag : boolean;
-  st_m : TQueue;
+  st_m : TStack;
   st : string;
   tf : textfile;
-
-function GetPrecedence(ch: Char): Integer;
-begin
-  case ch of
-    '+', '-': Result := 1;
-    '*', '/': Result := 2;
-    else Result := 0;
-  end;
-end;
 
 function InfixToPostfix(expression: string): string;
 var
   postfix: string;
-  stack: TQueue;
+  stack: TStack;
   i: Integer;
   ch: Char;
 begin
@@ -91,6 +81,6 @@ begin
     end
     else
       Writeln('Ошибка ввода инфиксной записи!!!');
-      
+     
   ReadLn;
 end.

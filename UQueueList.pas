@@ -16,7 +16,7 @@ interface
    function Pop (var S : TStack) : TElem;
    function TryPop (var S : TStack; var el : TElem) : boolean;
    function IsEmpty (var S : TStack) : boolean;
-   function Peek(var stack : TStack): char;                 //Prosmotr verxnego elem
+   function Peek(var stack : TStack): TElem;                 //Prosmotr verxnego elem
 
 
 implementation
@@ -72,9 +72,9 @@ begin
     raise Exception.Create('errro');
 end;
 
-function Peek(var stack : TStack): char;
+function Peek(var stack : TStack): TElem;
 var
-  topElement: char;
+  topElement: TElem;
 begin
   if IsEmpty(stack) then
     raise Exception.Create('error!!!')

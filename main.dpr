@@ -74,6 +74,9 @@ begin
   Trim(expression);
   main_test(check, expression);
 
+  //postfixExpression := InfixToPostfix(expression);
+  //Writeln('Постфиксная форма записи: : ', postfixExpression);
+
   if check then
     begin
       postfixExpression := InfixToPostfix(expression);
@@ -81,6 +84,6 @@ begin
     end
     else
       Writeln('Ошибка ввода инфиксной записи!!!');
-     
+    
   ReadLn;
 end.

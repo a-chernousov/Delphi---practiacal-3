@@ -27,11 +27,9 @@ begin
   Result := (ch = '+') or (ch = '-') or (ch = '*') or (ch = '/');
 end;
 
-
 function Test_In_str(str : string) : boolean;
 var
   AuxiliarySet, Numbers, Lower_case,  Capital_letters, all_multitude : set of char;
-
   lg, i: integer;
   flag : boolean;
 begin
@@ -44,7 +42,7 @@ begin
   lg := Length(str);
   i := 1;
   flag := true;
-  while (i <= lg) and (flag) do
+  while (i <= lg) and flag do
     begin
       flag := (str[i] in all_multitude);
       i := i + 1;
@@ -61,8 +59,4 @@ begin
 end;
 
 end.
-
-
-
-
 
